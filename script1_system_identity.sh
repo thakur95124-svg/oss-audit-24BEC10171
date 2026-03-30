@@ -1,68 +1,73 @@
 #!/bin/bash
-# =============================================================================
+# ============================================================
 # Script 1: System Identity Report
-# Author   : Thakur Shubham Kumar
-# Reg. No  : 24BEC10171
-# Course   : Open Source Software (NGMC)
-# Purpose  : Display a welcome screen with key Linux system information
-#            relevant to the Open Source Audit of the Linux Kernel.
-# =============================================================================
-
-# --- Student & Project Variables ---
-STUDENT_NAME="Thakur Shubham Kumar"
-REG_NO="24BEC10171"
-SOFTWARE_CHOICE="Linux Kernel"
-KERNEL_LICENSE="GNU General Public License v2 (GPL-2.0)"
-
-# --- Gather System Information using command substitution $() ---
-KERNEL_VERSION=$(uname -r)                          # Current running kernel version
-DISTRO_NAME=$(grep PRETTY_NAME /etc/os-release 2>/dev/null | cut -d= -f2 | tr -d '"')
-CURRENT_USER=$(whoami)                              # Logged-in username
-HOME_DIR=$HOME                                      # Home directory of current user
-UPTIME_INFO=$(uptime -p)                            # Human-readable uptime
-CURRENT_DATETIME=$(date '+%A, %d %B %Y | %H:%M:%S') # Formatted date and time
-HOSTNAME=$(hostname)                                # Machine hostname
-
-# --- Display Header Banner ---
-echo "============================================================"
-echo "          OPEN SOURCE AUDIT — SYSTEM IDENTITY REPORT       "
-echo "============================================================"
-echo ""
+# Author: [Thakur Shubham Kumar] | Registration: [24BEC10171]
+# Course: Open Source Software | Capstone Project
+# Software Audited: Git (Version Control System)
+# ============================================================
 
 # --- Student Information ---
-echo "  Student  : $STUDENT_NAME"
-echo "  Reg. No  : $REG_NO"
-echo "  Software : $SOFTWARE_CHOICE"
-echo ""
-echo "------------------------------------------------------------"
+STUDENT_NAME="[Thakur Shubham Kumar]"          
+REG_NUMBER="[24BEC10171]"       
+SOFTWARE_CHOICE="Git"                
 
-# --- System Information Block ---
+# --- Gather system information using command substitution ---
+KERNEL=$(uname -r)                   
+DISTRO=$(lsb_release -d 2>/dev/null | cut -f2 || cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)
+USER_NAME=Harshit18-web                
+HOME_DIR=$HOME                       
+UPTIME=$(uptime -p)                  
+CURRENT_DATE=28-03-2026   
+# --- License information for the OS ---
+OS_LICENSE="GNU General Public License version 2 (GPL v2)"
+
+# --- Display the welcome banner ---
+echo "================================================================"
+echo "        OPEN SOURCE SOFTWARE AUDIT — SYSTEM IDENTITY REPORT    "
+echo "================================================================"
+echo ""
+
+# --- Student info section ---
+echo "  Student  :HARSHIT"
+echo "  Reg No.  : 24BAI10967"
+echo "  Software : GIT"
+echo ""
+
+# --- Divider line ---
+echo "----------------------------------------------------------------"
 echo "  SYSTEM INFORMATION"
-echo "------------------------------------------------------------"
-echo "  Hostname     : $HOSTNAME"
-echo "  Distribution : ${DISTRO_NAME:-Unknown (check /etc/os-release)}"
-echo "  Kernel Ver.  : $KERNEL_VERSION"
-echo "  Current User : $CURRENT_USER"
-echo "  Home Dir     : $HOME_DIR"
-echo "  System Uptime: $UPTIME_INFO"
-echo "  Date & Time  : $CURRENT_DATETIME"
-echo ""
-echo "------------------------------------------------------------"
+echo "----------------------------------------------------------------"
 
-# --- License Information ---
-echo "  OPEN SOURCE LICENSE"
-echo "------------------------------------------------------------"
-echo "  The Linux Kernel is licensed under:"
-echo "  $KERNEL_LICENSE"
+# --- Print gathered system details ---
+echo "  Distribution : $DISTRO"
+echo "  Kernel Ver.  : $KERNEL"
+echo "  Current User : thakur95124-svg"
+echo "  Home Dir     : $HOME_DIR"
+echo "  System Up    : $UPTIME"
+echo "  Date & Time  :28-03-2026"
 echo ""
-echo "  This means you have the four essential freedoms:"
-echo "    [0] Freedom to run the program for any purpose"
-echo "    [1] Freedom to study and modify the source code"
-echo "    [2] Freedom to redistribute copies"
-echo "    [3] Freedom to distribute your modified versions"
+
+# --- License information ---
+echo "----------------------------------------------------------------"
+echo "  OS LICENSE INFORMATION"
+echo "----------------------------------------------------------------"
+echo "  The Linux kernel running this system is licensed under:"
+echo "  $OS_LICENSE"
 echo ""
-echo "============================================================"
-echo "  'What nobody tells you about documentation: the only"
-echo "   reader you're likely to get is the future you.'"
-echo "                                    — Linus Torvalds"
-echo "============================================================"
+echo "  This means: you are FREE to run, study, share, and modify"
+echo "  this software. The GPL v2 ensures that all derivative works"
+echo "  must also remain open and free — this is 'copyleft'."
+echo ""
+
+# --- Audited software summary ---
+echo "----------------------------------------------------------------"
+echo "  AUDITED SOFTWARE: GIT"
+echo "----------------------------------------------------------------"
+echo "  Git is a free and open-source distributed version control"
+echo "  system released under GPL v2. It was created by Linus"
+echo "  Torvalds in 2005 after BitKeeper revoked its free license"
+echo "  from the Linux kernel development community."
+echo ""
+echo "================================================================"
+echo "  End of System Identity Report"
+echo "================================================================"
