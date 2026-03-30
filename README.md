@@ -1,177 +1,196 @@
-# OSS Audit — Linux Kernel
-### Open Source Software (NGMC) | Capstone Project
+# OSS Capstone Audit — Git (Version Control System)
 
-| Field | Details |
-|-------|---------|
-| **Student Name** | Thakur Shubham Kumar |
-| **Registration No.** | 24BEC10171 |
-| **Course** | Open Source Software |
-| **Chosen Software** | Linux Kernel |
-| **License** | GNU General Public License v2 (GPL-2.0) |
+> Capstone audit of Git (GPL v2) for the VITyarthi Open Source Software course. Includes a 14-page project report covering origin story, license analysis, Linux footprint, and FOSS ecosystem, along with 5 bash shell scripts demonstrating practical Linux skills.
+
+**Student Name:** [Thakur Shubham Kumar]  
+**Registration Number:** [24BEC10171]  
+**Course:** Open Source Software (NGMC) — VITyarthi  
+**Software Audited:** Git — Distributed Version Control System  
+**License of Audited Software:** GNU General Public License v2 (GPL v2)  
 
 ---
 
 ## About This Project
 
-This repository contains the five shell scripts for the **Open Source Audit** capstone project. The audit subject is the **Linux Kernel** — the open-source operating system kernel created by Linus Torvalds in 1991 and licensed under GPL v2. The report (submitted separately as a PDF) covers the kernel's origin, philosophy, license analysis, Linux footprint, FOSS ecosystem, and comparison with proprietary alternatives.
+This repository is the technical submission for the **Open Source Audit** capstone project.
+It contains five shell scripts that demonstrate practical Linux command-line skills, each tied
+to the philosophy and structure of open-source software as covered in Units 1–5 of the course.
+
+The software chosen for audit is **Git** — created by Linus Torvalds in 2005 after BitKeeper
+revoked its free-of-charge license from the Linux kernel development community. Git is licensed
+under GPL v2, has over 100 million users, and is arguably the most important piece of
+open-source infrastructure in modern software development.
 
 ---
 
 ## Repository Structure
 
 ```
-oss-audit-24BEC10171/
-├── README.md                            ← This file
-├── script1_system_identity.sh           ← System welcome screen & kernel info
-├── script2_foss_inspector.sh            ← Package inspector with philosophy notes
-├── script3_disk_permission_auditor.sh   ← Directory audit with kernel paths
-├── script4_log_analyzer.sh             ← Log file keyword scanner
-└── script5_manifesto_generator.sh       ← Interactive manifesto generator
+oss-audit-[rollnumber]/
+│
+├── README.md                          ← This file
+├── script1_system_identity.sh         ← Script 1: System Identity Report
+├── script2_package_inspector.sh       ← Script 2: FOSS Package Inspector
+├── script3_disk_permission_auditor.sh ← Script 3: Disk and Permission Auditor
+├── script4_log_analyzer.sh            ← Script 4: Log File Analyzer
+└── script5_manifesto_generator.sh     ← Script 5: Open Source Manifesto Generator
 ```
 
 ---
 
-## Scripts Overview
+## Script Descriptions
 
-### Script 1 — System Identity Report
-Displays a formatted welcome screen with the Linux distribution name, kernel version, current user, home directory, system uptime, date/time, and the open-source license governing the OS.
+### Script 1 — System Identity Report (`script1_system_identity.sh`)
+Displays a formatted system welcome screen showing:
+- Linux distribution name and kernel version
+- Current logged-in user and their home directory
+- System uptime and current date/time
+- The open-source license covering the OS (GPL v2 for the Linux kernel)
 
-**Concepts used:** variables, `echo`, command substitution `$()`, `uname`, `whoami`, `uptime`, `hostname`, `date`, `grep`, `cut`
+**Concepts:** variables, command substitution `$()`, `echo`, `date`, `uname`, `whoami`, `uptime`
 
-**Run:**
+---
+
+### Script 2 — FOSS Package Inspector (`script2_package_inspector.sh`)
+Checks whether Git is installed on the system, detects the package manager (RPM or Debian),
+prints package version and license details, and uses a `case` statement to display
+an open-source philosophy note for several well-known FOSS packages.
+
+**Concepts:** `if-then-else`, `case` statement, `command -v`, `rpm -qi`, `dpkg -l`,
+pipe `|` with `grep`
+
+---
+
+### Script 3 — Disk and Permission Auditor (`script3_disk_permission_auditor.sh`)
+Loops through standard Linux directories (`/etc`, `/var/log`, `/home`, `/usr/bin`, `/tmp`)
+and Git-specific paths, reporting the size, permissions, owner, and group of each.
+Also locates and reports on the Git binary.
+
+**Concepts:** `for` loop over a bash array, `if [ -d ]`, `ls -ld`, `awk`, `du -sh`, `cut`
+
+---
+
+### Script 4 — Log File Analyzer (`script4_log_analyzer.sh`)
+Accepts a log file path and optional keyword as command-line arguments. Reads the file
+line by line counting keyword matches, implements retry logic to find alternative log files,
+and prints the last 5 matching lines.
+
+**Concepts:** `while IFS= read -r` loop, `if-then` inside loop, counter variables,
+`$1`/`$2` arguments, `${var:-default}`, `grep -i`, `tail`, retry loop
+
+---
+
+### Script 5 — Open Source Manifesto Generator (`script5_manifesto_generator.sh`)
+Interactively asks three questions, generates a personalised open-source philosophy
+statement, saves it to a `.txt` file, and displays it.
+
+**Concepts:** `read -p`, input validation with `while [ -z ]`, string concatenation,
+`>` and `>>` file output, `date`, `cat`, alias concept (demonstrated via comment)
+
+---
+
+## How to Run Each Script on Linux
+
+### Prerequisites
+- A Linux system (Ubuntu, Debian, Fedora, RHEL, Arch, or any mainstream distro)
+- Bash shell (default on all Linux systems; verify with `bash --version`)
+- Git installed: `sudo apt install git` (Debian/Ubuntu) or `sudo dnf install git` (Fedora/RHEL)
+
+### Step-by-Step Instructions
+
+**1. Clone this repository**
+```bash
+git clone https://github.com/[your-username]/oss-audit-[rollnumber].git
+cd oss-audit-[rollnumber]
+```
+
+**2. Make all scripts executable**
 ```bash
 chmod +x script1_system_identity.sh
-./script1_system_identity.sh
-```
-
----
-
-### Script 2 — FOSS Package Inspector
-Checks whether a given FOSS package is installed on the system, displays its version and license details, and uses a `case` statement to print an open-source philosophy note for known packages.
-
-**Concepts used:** `if-then-else`, `case` statement, `rpm -qi`, `dpkg -s`, `grep -E`, pipe (`|`), command-line arguments (`$1`)
-
-**Run:**
-```bash
-chmod +x script2_foss_inspector.sh
-
-# Check a specific package
-./script2_foss_inspector.sh bash
-./script2_foss_inspector.sh git
-./script2_foss_inspector.sh httpd
-
-# Run with no argument (defaults to 'bash')
-./script2_foss_inspector.sh
-```
-
-**Dependencies:** `rpm` (RHEL/Fedora) or `dpkg` (Debian/Ubuntu) — the script auto-detects which is available.
-
----
-
-### Script 3 — Disk and Permission Auditor
-Loops through a list of important Linux system directories and prints permissions, ownership, and disk usage for each. Also checks Linux Kernel-specific paths such as `/boot/grub`, `/sys/kernel`, `/proc/version`, and `/lib/modules/$(uname -r)`.
-
-**Concepts used:** `for` loop, arrays, `ls -ld`, `du -sh`, `awk`, `cut`, `uname`, `[ -d ]` and `[ -e ]` file tests
-
-**Run:**
-```bash
+chmod +x script2_package_inspector.sh
 chmod +x script3_disk_permission_auditor.sh
-./script3_disk_permission_auditor.sh
-```
-
-> Note: Some paths like `/proc` may show `N/A` for size — this is expected as `/proc` is a virtual filesystem.
-
----
-
-### Script 4 — Log File Analyzer
-Reads a log file line by line using a `while read` loop, counts occurrences of a keyword (default: `error`), and prints a summary with the last 5 matching lines. Auto-detects a system log if no file is specified.
-
-**Concepts used:** `while IFS= read -r`, `if-then` inside loop, counter variables, `$1` and `$2` arguments, arrays, do-while retry pattern, `grep -iq`
-
-**Run:**
-```bash
 chmod +x script4_log_analyzer.sh
-
-# Auto-detect log file, search for 'error'
-./script4_log_analyzer.sh
-
-# Specify log file and keyword
-./script4_log_analyzer.sh /var/log/syslog warning
-./script4_log_analyzer.sh /var/log/kern.log panic
-```
-
-**Kernel-relevant logs to try:**
-- `/var/log/kern.log` — Debian/Ubuntu kernel messages
-- `/var/log/messages` — RHEL/Fedora system messages
-- `dmesg > /tmp/dmesg.log && ./script4_log_analyzer.sh /tmp/dmesg.log error`
-
----
-
-### Script 5 — Open Source Manifesto Generator
-Asks the user three interactive questions and generates a personalised open-source philosophy statement, saving it to a timestamped `.txt` file.
-
-**Concepts used:** `read` (interactive input), string concatenation, writing to file with `>` and `>>`, `date` command, aliases concept (demonstrated via comment), input validation
-
-**Run:**
-```bash
 chmod +x script5_manifesto_generator.sh
-./script5_manifesto_generator.sh
 ```
 
-You will be prompted for three answers. The manifesto is saved as `manifesto_<username>_<timestamp>.txt` in the current directory.
-
----
-
-## Running All Scripts at Once
-
+**3. Run Script 1 — System Identity Report**
 ```bash
-# Make all scripts executable
-chmod +x script*.sh
-
-# Run them in sequence
 ./script1_system_identity.sh
-./script2_foss_inspector.sh git
+```
+No arguments required. Displays system identity and OS license information.
+
+**4. Run Script 2 — FOSS Package Inspector**
+```bash
+./script2_package_inspector.sh
+```
+No arguments required. Checks for Git installation and prints package details.
+
+**5. Run Script 3 — Disk and Permission Auditor**
+```bash
 ./script3_disk_permission_auditor.sh
-./script4_log_analyzer.sh
+```
+No arguments required. Audits system directories and Git-specific paths.
+
+**6. Run Script 4 — Log File Analyzer**
+```bash
+# Basic usage with default keyword 'error'
+./script4_log_analyzer.sh /var/log/syslog
+
+# With a custom keyword
+./script4_log_analyzer.sh /var/log/syslog warning
+
+# On RHEL/CentOS systems use /var/log/messages
+./script4_log_analyzer.sh /var/log/messages error
+```
+Requires a valid log file path as the first argument. Second argument (keyword) is optional.
+
+**7. Run Script 5 — Open Source Manifesto Generator**
+```bash
 ./script5_manifesto_generator.sh
 ```
+No arguments required. Interactive — you will be prompted to answer three questions.
+Your manifesto is saved to `manifesto_[yourusername].txt` in the current directory.
 
 ---
 
-## Linux Environment Setup
+## Dependencies
 
-These scripts are designed to run on any Linux distribution. Tested environments:
+| Script | Dependencies |
+|--------|-------------|
+| Script 1 | `uname`, `whoami`, `uptime`, `date`, `lsb_release` (all standard) |
+| Script 2 | `rpm` (RPM systems) or `dpkg` (Debian systems), `git` |
+| Script 3 | `ls`, `du`, `awk`, `cut`, `which` (all standard) |
+| Script 4 | `grep`, `tail` (all standard) |
+| Script 5 | `date`, `cat`, `whoami` (all standard) |
 
-- Ubuntu 20.04 / 22.04 LTS
-- CentOS / RHEL 8+
-- Fedora 36+
-- Any VIT lab Linux system
+All dependencies are standard Linux utilities present on any mainstream distribution.
+No additional software needs to be installed beyond what is already on your system.
 
-**To run on a Linux VM (if on Windows/Mac):**
-```bash
-# Option 1: WSL2 (Windows)
-wsl --install
+---
 
-# Option 2: VirtualBox with Ubuntu ISO
-# Download from: https://ubuntu.com/download/desktop
+## About the Audited Software — Git
 
-# Option 3: Online Linux terminal
-# https://www.onlinegdb.com/online_bash_shell
-```
+| Property | Detail |
+|----------|--------|
+| **Full Name** | Git |
+| **Category** | Distributed Version Control System |
+| **License** | GNU General Public License v2 (GPL v2) |
+| **Created by** | Linus Torvalds |
+| **Created in** | April 2005 |
+| **Current Maintainer** | Junio C Hamano |
+| **Official Site** | https://git-scm.com |
+| **Source Code** | https://github.com/git/git |
+| **Mailing List** | git@vger.kernel.org |
 
 ---
 
 ## Academic Integrity
 
-All scripts were written as original work for the OSS NGMC Capstone Project. The report (submitted as PDF) is written entirely in the student's own words, based on research of primary sources including the Linux Kernel documentation, GPL v2 license text, and reference materials listed in the project brief.
+All written sections of the accompanying project report are the original work of the student
+named above. Shell scripts are written and understood by the student. This repository
+is submitted as part of the VITyarthi Open Source Software capstone project.
 
 ---
 
-## References
-
-- Linux Kernel official site: https://www.kernel.org
-- GPL v2 license text: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-- GNU Free Software Definition: https://gnu.org/philosophy/free-sw.html
-- Linus Torvalds — *Just for Fun* (autobiography)
-- The Linux Command Line — William Shotts: https://linuxcommand.org
-- GNU Bash Manual: https://gnu.org/software/bash/manual
+*"Every tool you will use in your career was shaped by people who chose to build in the open and share their work freely."*  
+— VITyarthi OSS Course
