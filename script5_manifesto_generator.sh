@@ -1,116 +1,115 @@
 #!/bin/bash
-# =============================================================================
+# ============================================================
 # Script 5: Open Source Manifesto Generator
-# Author   : Thakur Shubham Kumar
-# Reg. No  : 24BEC10171
-# Course   : Open Source Software (NGMC)
-# Purpose  : Interactively collect user input and generate a personalised
-#            open source philosophy statement, saved to a .txt file.
-#
-# Concepts demonstrated:
-#   - read (interactive user input)
-#   - String concatenation and variable interpolation
-#   - Writing to a file with > and >>
-#   - date command for timestamping
-#   - Aliases concept (shown via comment and alias definition)
-#   - Formatting and output design
-# =============================================================================
+# Author: [Thakur Shubham Kumar] | Registration: [24BEC10171]
+# Course: Open Source Software | Capstone Project
+# Purpose: Interactively generate a personal OSS philosophy statement
+# ============================================================
 
-# --- Alias demonstration (aliases make commands shorter/memorable) ---
-# In a real interactive session you could run: alias today='date +%d-%m-%Y'
-# Here we define the alias and use the underlying command in the script:
-# alias today='date +%d-%B-%Y'   # Aliases don't expand in non-interactive scripts
-FORMATTED_DATE=$(date '+%d %B %Y')    # We use command substitution instead
-TIMESTAMP=$(date '+%Y%m%d_%H%M%S')   # For unique filename
+# --- Alias demonstration ---
+# In a real interactive session, you could set:
+#   alias generate_manifesto='bash script5_manifesto_generator.sh'
+# Aliases make long commands shorter — a core Linux usability concept.
+# Note: aliases are shell-session scoped; they don't persist across scripts.
 
-echo "============================================================"
-echo "         OPEN SOURCE MANIFESTO GENERATOR"
-echo "  Student : Thakur Shubham Kumar | Reg: 24BEC10171"
-echo "============================================================"
-echo ""
-echo "  Answer three questions to generate your personal"
-echo "  open source philosophy manifesto."
-echo ""
-echo "  Your answers will be saved to a .txt file."
-echo "------------------------------------------------------------"
-echo ""
+# --- Define output file name using current username ---
+OUTPUT="manifesto_thakur95124-svg.txt"
 
-# --- Interactive input using 'read' ---
+# --- Print welcome banner ---
+echo "============================================"
+echo "   Open Source Manifesto Generator"
+echo "   OSS Capstone — VITyarthi"
+echo "============================================"
+echo ""
+echo "  This tool will generate your personal open-source"
+echo "  philosophy statement based on three questions."
+echo "  Answer honestly — this is your declaration."
+echo ""
+echo "--------------------------------------------"
+
+# --- Collect user input using read ---
+
+# Question 1: A tool they use every day
 read -p "  1. Name one open-source tool you use every day: " TOOL
-echo ""
+
+# Validate: don't accept empty input
+while [ -z "$TOOL" ]; do
+    echo "  Please enter a tool name."
+    read -p "  1. Name one open-source tool you use every day: " TOOL
+done
+
+# Question 2: What freedom means to them (one word)
 read -p "  2. In one word, what does 'freedom' mean to you? " FREEDOM
-echo ""
+
+# Validate: must be a single word (no spaces)
+while [ -z "$FREEDOM" ]; do
+    echo "  Please enter one word."
+    read -p "  2. In one word, what does 'freedom' mean to you? " FREEDOM
+done
+
+# Question 3: Something they would build and share
 read -p "  3. Name one thing you would build and share freely: " BUILD
+
+# Validate: must not be empty
+while [ -z "$BUILD" ]; do
+    echo "  Please enter something you would build."
+    read -p "  3. Name one thing you would build and share freely: " BUILD
+done
+
+echo ""
+echo "--------------------------------------------"
+echo "  Generating your manifesto..."
+echo "--------------------------------------------"
 echo ""
 
-# --- Validate inputs — make sure none are empty ---
-if [ -z "$TOOL" ] || [ -z "$FREEDOM" ] || [ -z "$FREEDOM" ] || [ -z "$BUILD" ]; then
-    echo "  ERROR: All three answers are required. Please run the script again."
-    exit 1
-fi
+# --- Get current date in a readable format ---
+DATE=30-03-2026
 
-# --- Set output filename using current user + timestamp ---
-OUTPUT="manifesto_$(whoami)_${TIMESTAMP}.txt"
+# --- Get the username for personalisation ---
+USER_ID="thakur95124-svg"
 
-# --- Compose the manifesto paragraph using string concatenation ---
-# We build a multi-paragraph manifesto from the user's answers.
+# --- Compose the manifesto using string concatenation and echo >> ---
+# The >> operator appends to the file (creates it if it doesn't exist)
+# We first clear/create the file with >, then append paragraphs
 
-# Write the manifesto to file using > (overwrite) and >> (append)
-# First line: overwrite/create the file
-echo "============================================================" > "$OUTPUT"
-echo "         MY OPEN SOURCE MANIFESTO" >> "$OUTPUT"
-echo "  Generated by : Thakur Shubham Kumar (24BEC10171)" >> "$OUTPUT"
-echo "  Date         : $FORMATTED_DATE" >> "$OUTPUT"
-echo "============================================================" >> "$OUTPUT"
+# Write the header to the file
+echo "============================================" > "$OUTPUT"
+echo "   MY OPEN SOURCE MANIFESTO" >> "$OUTPUT"
+echo "   Generated by: $USER_ID" >> "$OUTPUT"
+echo "   Date: $DATE" >> "$OUTPUT"
+echo "============================================" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
 
-# --- Paragraph 1: Personal relationship with open source ---
-echo "Every day, I rely on $TOOL — a tool that exists because someone, somewhere," >> "$OUTPUT"
-echo "chose to write it openly and share it with the world. I did not pay for it." >> "$OUTPUT"
-echo "I did not negotiate for it. It was simply there, freely available, because" >> "$OUTPUT"
-echo "its creators believed that knowledge and tools belong to everyone." >> "$OUTPUT"
+# Write the personalised manifesto paragraph
+# String concatenation is done naturally in bash by placing variables inline
+echo "I believe in the power of open software to change the world." >> "$OUTPUT"
+echo "Every day, I rely on $TOOL — a tool built not for profit," >> "$OUTPUT"
+echo "but for the love of craft and the belief that knowledge" >> "$OUTPUT"
+echo "belongs to everyone. To me, freedom means $FREEDOM." >> "$OUTPUT"
 echo "" >> "$OUTPUT"
+echo "I understand now that the software I use was written by" >> "$OUTPUT"
+echo "people who chose to share their work so that others could" >> "$OUTPUT"
+echo "build on it. Linus Torvalds shared the Linux kernel." >> "$OUTPUT"
+echo "Richard Stallman shared the GNU tools. Generations of" >> "$OUTPUT"
+echo "developers gave their time freely — and because of that," >> "$OUTPUT"
+echo "I have tools that no money could have built alone." >> "$OUTPUT"
+echo "" >> "$OUTPUT"
+echo "In the spirit of open source, I commit to building" >> "$OUTPUT"
+echo "$BUILD and sharing it freely with the world." >> "$OUTPUT"
+echo "Because the best way to honour the giants whose shoulders" >> "$OUTPUT"
+echo "I stand on is to become a shoulder for someone else." >> "$OUTPUT"
+echo "" >> "$OUTPUT"
+echo "Signed: thakur95124-svg-web | $DATE" >> "$OUTPUT"
+echo "============================================" >> "$OUTPUT"
 
-# --- Paragraph 2: What freedom means ---
-echo "To me, freedom in the context of software means $FREEDOM. It is not just" >> "$OUTPUT"
-echo "about price — it is about power. The power to read the code that runs my" >> "$OUTPUT"
-echo "computer. The power to change it if it does not suit my needs. The power to" >> "$OUTPUT"
-echo "share what I improve with others who might need it too. The Linux Kernel," >> "$OUTPUT"
-echo "which I have studied in this course, embodies this freedom completely. Under" >> "$OUTPUT"
-echo "the GPL v2, every line of code must remain open — no one can take it, lock" >> "$OUTPUT"
-echo "it away, and sell it back to us without the source." >> "$OUTPUT"
-echo "" >> "$OUTPUT"
-
-# --- Paragraph 3: Commitment to build and share ---
-echo "I commit to this philosophy. One day, I will build $BUILD — and when I do," >> "$OUTPUT"
-echo "I will share it freely. Not because I have to. But because I understand, from" >> "$OUTPUT"
-echo "studying projects like the Linux Kernel, that the greatest software in human" >> "$OUTPUT"
-echo "history was not written for profit. It was written for curiosity, for necessity," >> "$OUTPUT"
-echo "and for the belief that what one person builds can make life better for everyone." >> "$OUTPUT"
-echo "" >> "$OUTPUT"
-
-# --- Closing statement ---
-echo "Standing on the shoulders of Linus Torvalds, Richard Stallman, and thousands" >> "$OUTPUT"
-echo "of unnamed contributors, I choose to give back to the commons." >> "$OUTPUT"
-echo "" >> "$OUTPUT"
-echo "                              — Thakur Shubham Kumar" >> "$OUTPUT"
-echo "                                24BEC10171, $(date '+%Y')" >> "$OUTPUT"
-echo "" >> "$OUTPUT"
-echo "============================================================" >> "$OUTPUT"
-echo "  [ Tool I use daily  : $TOOL ]" >> "$OUTPUT"
-echo "  [ Freedom means     : $FREEDOM ]" >> "$OUTPUT"
-echo "  [ I will build      : $BUILD ]" >> "$OUTPUT"
-echo "============================================================" >> "$OUTPUT"
-
-# --- Display the manifesto on screen ---
+# --- Confirm file was saved ---
+echo "  Manifesto saved to: thakur95124-svg"
 echo ""
-echo "------------------------------------------------------------"
-echo "  YOUR MANIFESTO (also saved to: $OUTPUT)"
-echo "------------------------------------------------------------"
-echo ""
+
+# --- Display the generated manifesto ---
+echo "============================================"
+echo "   YOUR MANIFESTO:"
+echo "============================================"
 cat "$OUTPUT"
-
 echo ""
-echo "  Manifesto saved successfully to: $OUTPUT"
-echo "  Share it. It belongs to you — and to everyone."
-echo "============================================================"
+echo "  [Tip: Share this file — open source starts with sharing]"
