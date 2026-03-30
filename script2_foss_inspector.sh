@@ -1,120 +1,121 @@
 #!/bin/bash
-# =============================================================================
+# ============================================================
 # Script 2: FOSS Package Inspector
-# Author   : Thakur Shubham Kumar
-# Reg. No  : 24BEC10171
-# Course   : Open Source Software (NGMC)
-# Purpose  : Check if a FOSS package is installed, display its version/license,
-#            and print a philosophy note using a case statement.
-# Usage    : ./script2_foss_inspector.sh [package_name]
-#            If no argument given, defaults to checking kernel-related tools.
-# =============================================================================
+# Author: [Thakur Shubham Kumar] | Registration: [24BEC10171]
+# Course: Open Source Software | Capstone Project
+# Purpose: Check if a FOSS package is installed and describe it
+# ============================================================
 
-# --- Accept optional package name as argument, or use default ---
-PACKAGE=${1:-"bash"}   # Default to 'bash' if no argument provided
+# --- Define the package to inspect ---
+PACKAGE="git"    # Our audited software
 
-echo "============================================================"
-echo "         FOSS PACKAGE INSPECTOR"
-echo "  Student : Thakur Shubham Kumar | Reg: 24BEC10171"
-echo "============================================================"
-echo ""
-echo "  Inspecting package: '$PACKAGE'"
-echo "------------------------------------------------------------"
+# --- Print header ---
+echo "============================================"
+echo "   FOSS Package Inspector"
+echo "============================================"
+echo "  Checking package: $PACKAGE"
+echo "--------------------------------------------"
 
-# --- Check if package is installed using if-then-else ---
-# Try rpm first (RHEL/Fedora/VIT lab systems), then dpkg (Debian/Ubuntu)
-
-INSTALLED=false
+# --- Detect package manager and check if installed ---
+# Use if-then-else to handle both RPM-based and Debian-based systems
 
 if command -v rpm &>/dev/null; then
-    # RPM-based system (CentOS, RHEL, Fedora)
+    # RPM-based system (RHEL, CentOS, Fedora)
     if rpm -q "$PACKAGE" &>/dev/null; then
-        INSTALLED=true
-        echo "  [FOUND] '$PACKAGE' is installed on this system (RPM)."
+        echo "  STATUS: $PACKAGE is INSTALLED (RPM system)"
         echo ""
         echo "  --- Package Details ---"
-        rpm -qi "$PACKAGE" 2>/dev/null | grep -E "^(Name|Version|License|Summary|URL)" \
-            | awk -F': ' '{printf "  %-10s: %s\n", $1, $2}'
+        # Use grep to filter only relevant fields from rpm -qi output
+        rpm -qi "$PACKAGE" | grep -E "^(Name|Version|License|Summary|URL)"
+    else
+        echo "  STATUS: $PACKAGE is NOT installed on this system."
+        echo "  To install, run: sudo dnf install $PACKAGE"
     fi
+
 elif command -v dpkg &>/dev/null; then
     # Debian/Ubuntu-based system
     if dpkg -l "$PACKAGE" 2>/dev/null | grep -q "^ii"; then
-        INSTALLED=true
-        echo "  [FOUND] '$PACKAGE' is installed on this system (dpkg)."
+        echo "  STATUS: $PACKAGE is INSTALLED (Debian system)"
         echo ""
         echo "  --- Package Details ---"
-        dpkg -s "$PACKAGE" 2>/dev/null | grep -E "^(Package|Version|Maintainer|Description)" \
-            | awk -F': ' '{printf "  %-12s: %s\n", $1, $2}'
-    fi
-fi
-
-# --- If not found via package manager, check if the binary exists ---
-if [ "$INSTALLED" = false ]; then
-    if command -v "$PACKAGE" &>/dev/null; then
-        echo "  [FOUND] '$PACKAGE' is available as a binary (may not be a managed package)."
-        echo "  Binary location: $(which $PACKAGE)"
-        INSTALLED=true
+        # dpkg -l shows installed packages; grep for our package details
+        dpkg -l "$PACKAGE" | grep "^ii" | awk '{print "  Package: "$2"\n  Version: "$3"\n  Arch: "$4}'
     else
-        echo "  [NOT FOUND] '$PACKAGE' does not appear to be installed."
-        echo "  Tip: Install it with 'sudo apt install $PACKAGE' or 'sudo dnf install $PACKAGE'"
+        echo "  STATUS: $PACKAGE is NOT installed on this system."
+        echo "  To install, run: sudo apt install $PACKAGE"
+    fi
+
+else
+    
+    if which "$PACKAGE" &>/dev/null; then
+        echo "  STATUS: $PACKAGE binary found at: $(which $PACKAGE)"
+        
+        echo "  Version: $($PACKAGE --version 2>/dev/null)"
+    else
+        echo "  STATUS: Cannot determine — no known package manager found."
     fi
 fi
 
 echo ""
-echo "------------------------------------------------------------"
-echo "  OPEN SOURCE PHILOSOPHY NOTE"
-echo "------------------------------------------------------------"
 
-# --- Case statement: print a philosophy note for known FOSS packages ---
-case "$PACKAGE" in
-    linux-kernel | kernel | uname)
-        echo "  Linux Kernel (GPL v2): Born from Linus Torvalds' frustration"
-        echo "  with proprietary Unix. GPL ensures every improvement stays free."
-        ;;
-    bash | sh)
-        echo "  GNU Bash (GPL v3): The shell that powers millions of scripts."
-        echo "  Part of GNU — Richard Stallman's vision of a fully free OS."
-        ;;
+
+if command -v git &>/dev/null; then
+    echo "  Git Version Installed: $(git --version)"
+fi
+
+echo ""
+echo "--------------------------------------------"
+
+
+echo "  OPEN SOURCE PHILOSOPHY NOTE:"
+echo "--------------------------------------------"
+
+case $PACKAGE in
     git)
-        echo "  Git (GPL v2): Built by Linus Torvalds in 2 weeks when the"
-        echo "  proprietary BitKeeper revoked Linux's free license. Open source"
-        echo "  creates resilience against corporate control."
+        # Our audited software
+        echo "  Git: Born from necessity when freedom was taken away."
+        echo "  Linus Torvalds built Git in 2005 after BitKeeper revoked"
+        echo "  its free license. Git embodies the OSS value: when a"
+        echo "  proprietary tool fails you, build your own and share it."
         ;;
     httpd | apache2)
-        echo "  Apache HTTP Server (Apache 2.0): Powers ~30% of the web."
-        echo "  The Apache license allows commercial use without copyleft —"
-        echo "  a different philosophy from GPL but equally valid."
+        echo "  Apache: the web server that built the open internet."
+        echo "  Apache HTTP Server has powered the web since 1995 and"
+        echo "  remains one of the most successful OSS projects ever."
         ;;
-    python3 | python)
-        echo "  Python (PSF License): A language shaped entirely by community."
-        echo "  Guido van Rossum stepped back; the community took over. Proof"
-        echo "  that open source governance scales beyond one person."
+    mysql | mysql-server)
+        echo "  MySQL: open source at the heart of millions of apps."
+        echo "  MySQL uses a dual-license model: GPL for OSS projects"
+        echo "  and a commercial license for proprietary use."
         ;;
-    mysql | mariadb)
-        echo "  MySQL/MariaDB (GPL v2 / Commercial): A tale of two licenses."
-        echo "  When Oracle acquired MySQL, the community forked it into MariaDB."
-        echo "  Open source gives users an exit when corporate interests diverge."
+    vlc | vlc-bin)
+        echo "  VLC: built by students for students."
+        echo "  VLC was created at a French university to stream video"
+        echo "  over campus networks. Now it plays virtually everything."
         ;;
     firefox)
-        echo "  Firefox (MPL 2.0): A nonprofit browser fighting for an open web."
-        echo "  Mozilla exists to prove that mission-driven software can compete"
-        echo "  against trillion-dollar corporations."
+        echo "  Firefox: a nonprofit fighting for an open web."
+        echo "  Mozilla's Firefox exists to ensure no single company"
+        echo "  controls the internet's browser ecosystem."
         ;;
-    vlc)
-        echo "  VLC (LGPL/GPL): Built by students in Paris who just wanted to"
-        echo "  watch videos on their university network. Community > commercial."
+    python3 | python)
+        echo "  Python: a language shaped entirely by community."
+        echo "  Python's PSF license and governance model is one of"
+        echo "  the best examples of community-driven development."
         ;;
-    gcc | g++)
-        echo "  GCC (GPL v3): The compiler that compiles the Linux Kernel itself."
-        echo "  Without free compilers, free software cannot exist. The toolchain"
-        echo "  is the foundation of the entire FOSS ecosystem."
+    libreoffice)
+        echo "  LibreOffice: born from a community fork."
+        echo "  When Oracle acquired Sun, the community forked"
+        echo "  OpenOffice to create LibreOffice — OSS self-governance."
         ;;
     *)
-        echo "  '$PACKAGE' is part of the vast open-source ecosystem."
-        echo "  Every FOSS tool represents a choice: knowledge shared freely"
-        echo "  is knowledge that compounds — for everyone, forever."
+        # Default case for any other package
+        echo "  $PACKAGE: An open-source tool that gives you the"
+        echo "  freedom to run, study, modify, and share software."
         ;;
 esac
 
 echo ""
-echo "============================================================"
+echo "============================================"
+echo "  End of FOSS Package Inspector"
+echo "============================================"
